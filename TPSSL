@@ -1,11 +1,14 @@
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 
 
 
 int main (int argc, char *argv[]){
 	in	= fopen(argv[1],"r");
-	
+	char caracter;
+	char * buffer[256];
+	int flag=0;
 
 	if(argc == 1){
 		printf("\n(ERROR) Debe ingresar 1 nombre de archivo!\n");
@@ -22,17 +25,38 @@ int main (int argc, char *argv[]){
 	
 	
 	
-	AnalizarArchivo(in);
+	while(caracter = fgetc(in)!= EOF){  //mientras lea carac por carac marca el flag en 1 si son letras o letras + numeros(esto falta mejorarlo un toq)
+		if(isalpha(caracter)){ 			// mientras el flag sea1 concatena cuando hay un espacio o algun carac de puntuacion imprime el buffer y lo devuelve a null para
+			buffer =+ caracter;			// poder seguir leyebndo mas palabras
+			flag =1;
+		}
+		if(isdigit(caracter)&& flag ==1)
+			buffer =+ caracter;
+			flag =1;
+		}
+		if(isspace(caracter)&&flag==1))
+			printf("%s /n",buffer); //aca comparar con lista de palabras reservadas
+			buffer=NULL;
+			flag =0;
+		}
+
+	if(caracter =='+')     printf("%c",caracter); //deberia poner el flag a 0 tambien 
+    if(caracter =='-')     printf("%c",caracter);
+    if(caracter =='(')     printf("%c",caracter);
+    if(caracter ==')')     printf("%c",caracter);
+    if(caracter ==',')     printf("%c",caracter);
+    if(caracter ==';')     printf("%c",caracter);
+    if(caracter ==':')     printf("%c",caracter);
+    if(caracter =='=')     printf("%c",caracter);
+
+	}
 	fclose(in);
 	
 	return 0;
 }
 
 
-void AnalizarArchivo (File * archivo){
 
-
-}
 int columna(char c){   //esto lo vamos a usar en lo que seria el automata para determinar si es lenguaje
     if(isalpha(c))  return 0;
     if(isdigit(c))  return 1;
@@ -47,5 +71,9 @@ int columna(char c){   //esto lo vamos a usar en lo que seria el automata para d
     if(c == EOF)    return 10;
     if(isspace(c))  return 11;
     return 12;
+}
+
+void AnalizarArchivo(FILE *f ){  
+    
 }
 
