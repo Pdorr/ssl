@@ -4,13 +4,14 @@
 #include <stdlib.h>
 #include "TPSSL.h"
 
-char buffer[200];
+
 int main (int argc, char *argv[]){
 	FILE * in;
 	in	= fopen(argv[1],"r");
 	char caracter;
 	//char buffer[200];
 	char test []= "int";
+	 flagId=0;
 
 	int i=0;
 	int flag=0;
@@ -39,31 +40,48 @@ int main (int argc, char *argv[]){
 			buffer[i]= caracter;			// poder seguir leyebndo mas palabras
 			flag =1;
 		}
-		if(isdigit(caracter)&& flag ==1){
+		if(isdigit(caracter)&& flag ==1 ){
 			buffer[i]= caracter;
 			flag =1;
 		}
-		if(isspace(caracter)&&flag==1){
-			puts("AAA");
+		if(isspace(caracter)&&flag==1 && flagId!=1){
+			puts("se detecto espacio");
 			buffer[i]= '\0';
 			printf("buffer es : %s \n",buffer); //aca comparar con lista de palabras reservadas
+			printf("%s  es Literal Cadena\n",buffer);
 			EsReservada();
 			LimpiarBuffer();
 			i=-1;
 			flag =0;
 		}
+		if(caracter == '"'){
+			buffer[i]= caracter;
+			if (flagId==1){
+			buffer[i++]= '\0';
+			printf("buffer es : %s \n",buffer); //aca comparar con lista de palabras reservadas
+			LimpiarBuffer();
+				}else{
+				flagId=1;
+			}
+		}
 		
+
+	if((caracter =='+'|| caracter =='-'|| caracter =='=' || caracter =='/'||caracter ==':')&& flagId!=1){
+		     printf("%c TOKEN > OPERADOR \n",caracter); //deberia poner el flag a 0 tambien
+			 printf("buffer es : %s \n",buffer);
+			EsReservada();
+			LimpiarBuffer();
+			i=-1;
+			flag =0;
+	}
+    
+    if(caracter =='('|| caracter ==')' || caracter ==',' || caracter ==';'){    
+		printf("buffer es : %s \n",buffer); 
+		printf("%c  TOKEN > CARACTER DE PUNTUACION\n",caracter);
+	}
+    
+    
 		i++;
-/*
-	if(caracter =='+')     printf("%c",caracter); //deberia poner el flag a 0 tambien 
-    if(caracter =='-')     printf("%c",caracter);
-    if(caracter =='(')     printf("%c",caracter);
-    if(caracter ==')')     printf("%c",caracter);
-    if(caracter ==',')     printf("%c",caracter);
-    if(caracter ==';')     printf("%c",caracter);
-    if(caracter ==':')     printf("%c",caracter);
-    if(caracter =='=')     printf("%c",caracter);
-*/
 	}
 	fclose(in);
 	
@@ -103,10 +121,20 @@ void LimpiarBuffer(void){
 
 void EsReservada(void){
 	int l;
+	int k=0;
+	if(strcmp(buffer,"")==0){
+
+	}
+	else{
 	for (l=0; l<=31;l++){
 		if(strcmp(buffer,PalabrasReservadas[l])==0){
 			printf("%s  es Palabra Reservada\n",buffer);
+			k=1;
 		}
+	}
+	if (k==0){
+		printf("%s  es Identificador\n",buffer);
+	}
 	}
 }    	   	   	   	
    	   	   	   	

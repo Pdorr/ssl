@@ -1,6 +1,7 @@
 
 char buffer[200];
-char PalabrasReservadas[31][10]={"auto",
+int flagId=0;
+char PalabrasReservadas[32][10]={"auto",
 "double",
 "int",
 "struct",
