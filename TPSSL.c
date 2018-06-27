@@ -2,14 +2,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-char buffer[200];
+#include "TPSSL.h"
 
+char buffer[200];
 int main (int argc, char *argv[]){
 	FILE * in;
 	in	= fopen(argv[1],"r");
 	char caracter;
-	char buffer[200];
-	
+	//char buffer[200];
+	char test []= "int";
 
 	int i=0;
 	int flag=0;
@@ -32,6 +33,7 @@ int main (int argc, char *argv[]){
 	while(!feof(in)){ 
 		
 		caracter =fgetc(in);
+		if(caracter == EOF) return 0;
 		printf("caracter leido %c \n",caracter); //mientras lea carac por carac marca el flag en 1 si son letras o letras + numeros(esto falta mejorarlo un toq)
 		if(isalpha(caracter)){ 			// mientras el flag sea1 concatena cuando hay un espacio o algun carac de puntuacion imprime el buffer y lo devuelve a null para
 			buffer[i]= caracter;			// poder seguir leyebndo mas palabras
@@ -45,12 +47,12 @@ int main (int argc, char *argv[]){
 			puts("AAA");
 			buffer[i]= '\0';
 			printf("buffer es : %s \n",buffer); //aca comparar con lista de palabras reservadas
+			EsReservada();
 			LimpiarBuffer();
+			i=-1;
 			flag =0;
 		}
-		if(buffer == "int"){
-			puts("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		}
+		
 		i++;
 /*
 	if(caracter =='+')     printf("%c",caracter); //deberia poner el flag a 0 tambien 
@@ -91,8 +93,24 @@ void AnalizarArchivo(FILE *f ){
 }
 
 void LimpiarBuffer(void){
+	//memset(buffer,0,sizeof(char));
 	int j;
 	for (j=0; j <= 200; j++){
-		buffer[j]='0';
+		buffer[j]=0;
 	}
 }
+
+
+void EsReservada(void){
+	int l;
+	for (l=0; l<=31;l++){
+		if(strcmp(buffer,PalabrasReservadas[l])==0){
+			printf("%s  es Palabra Reservada\n",buffer);
+		}
+	}
+}    	   	   	   	
+   	   	   	   	
+   		   	
+ 	   	   	    	
+  	  	   	    	
+  	   	    	   
